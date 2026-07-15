@@ -6,11 +6,11 @@ import { z } from 'zod';
 class TeamMembersController {
   async add(request: Request, response: Response){
     const paramsSchema = z.object({
-      id: z.uuid()
+      id: z.string().uuid()
     })
 
     const bodySchema = z.object({
-      usersIds: z.array(z.uuid().min(1, "At least one userId is required"))
+      usersIds: z.array(z.string().uuid().min(1, "At least one userId is required"))
     })
 
     const { id } = paramsSchema.parse(request.params)
@@ -75,11 +75,11 @@ class TeamMembersController {
 
   async remove(request: Request, response: Response){
     const paramsSchema = z.object({
-      id: z.uuid()
+      id: z.string().uuid()
     })
 
     const bodySchema = z.object({
-      usersIds: z.array(z.uuid().min(1, "At least one userId is required"))
+      usersIds: z.array(z.string().uuid().min(1, "At least one userId is required"))
     })
 
     const { id } = paramsSchema.parse(request.params)
@@ -122,7 +122,7 @@ class TeamMembersController {
 
   async index(request: Request, response: Response){
     const paramsSchema = z.object({
-      id: z.uuid()
+      id: z.string().uuid()
     })
 
     const { id } = paramsSchema.parse(request.params) 

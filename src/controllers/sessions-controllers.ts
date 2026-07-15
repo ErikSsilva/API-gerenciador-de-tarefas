@@ -10,7 +10,7 @@ import { z } from 'zod';
 class SessionsController {
   async create(request: Request, response: Response) {
     const bodySchema = z.object({
-      email: z.email(),
+      email: z.string().email(),
       password: z.string().min(6)
     })
 

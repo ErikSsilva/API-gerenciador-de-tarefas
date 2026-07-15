@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { AppError } from '@/utils/appError';
 import { prisma } from '@/database/prisma'
+import { Prisma } from '../../prisma/generated/prisma'
 import { z } from 'zod';
-import { Prisma } from '../../prisma/generated/prisma/client';
+
 
 class TasksController{
   async create(request: Request, response: Response) {
@@ -11,7 +12,7 @@ class TasksController{
       description: z.string().optional(),
       status: z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"]).optional().default("PENDING"),
       priority: z.enum(["HIGH", "MEDIUM", "LOW"]).optional().default("MEDIUM"),
-      teamId: z.uuid("Invalid team ID"),
+      teamId: z.string().uuid("Invalid team ID"),
     })
 
     const { title, description, status, priority, teamId } = bodySchema.parse(request.body)
@@ -105,7 +106,7 @@ class TasksController{
 
   async update(request: Request, response: Response){
     const paramsSchema = z.object({
-      id: z.uuid("Invalid task ID")
+      id: z.string().uuid("Invalid task ID")
     })
 
     const bodySchema = z.object({
@@ -163,7 +164,7 @@ class TasksController{
 
   async delete(request: Request, response: Response){
     const paramsSchema = z.object({
-      id: z.uuid("Invalid task ID")
+      id: z.string().uuid("Invalid task ID")
     })
 
     const { id } = paramsSchema.parse(request.params)
@@ -195,7 +196,7 @@ class TasksController{
 
   async assignTask(request: Request, response: Response) {
     const paramsSchema = z.object({
-      id: z.uuid("Invalid task ID")
+      id: z.string().uuid("Invalid task ID")
     })
 
     const bodySchema = z.object({
@@ -250,7 +251,7 @@ class TasksController{
 
   async history(request: Request, response: Response) {
     const paramsSchema = z.object({
-      id: z.uuid("Invalid task ID")
+      id: z.string().uuid("Invalid task ID")
     })
 
     const { id: userId, role } = request.user!

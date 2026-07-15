@@ -10,7 +10,7 @@ class UserController {
 
     const bodySchema = z.object({
       name: z.string({message: "Name is required"}).trim().min(2),
-      email: z.email({message: "Invalid email format"}).trim().min(1, {message: "Email is required"}).toLowerCase(),
+      email: z.string().email({message: "Invalid email format"}).trim().min(1, {message: "Email is required"}).toLowerCase(),
       password: z.string({message: "Password is required"}).min(6, {message: "password must be at least 6 characters long"}),
       role: z.enum(["ADMIN", "MEMBER"]).optional()
     })
