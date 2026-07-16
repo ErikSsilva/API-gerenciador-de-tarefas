@@ -15,7 +15,23 @@ This is a REST API developed with **Node.js** for a complete **Task Management**
 
 ---
 
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
 
+---
+
+## 🚀 Highlights
+
+- JWT Authentication
+- Role-based access control (RBAC)
+- Task history tracking
+- Dockerized environment
+- Integration tests with Jest and Supertest
+
+---
 
 ## 🔑 Key Features
 
@@ -43,13 +59,8 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/task_manager_db?sche
 JWT_SECRET="your_jwt_secret"
 PORT=3333
 ```
-### 2. Run Database (Docker)
-Start the PostgreSQL 17 container:
 
-```
-docker-compose up -d
-```
-### 3. Install & Start
+### 2. Install & Start
 
 #### Install dependencies
 ```
@@ -65,6 +76,20 @@ npm run dev
 ```
 The API will start running at http://localhost:3333 (or your custom PORT).
 
+### 3. Docker
+You can run the entire application (API + PostgreSQL) using Docker:
+
+```
+docker-compose up --build
+```
+To run in background:
+```
+docker-compose up -d
+```
+
+
+this will start the entire application so you don't need to do the previous steps ( 2. Install & Start )
+
 ## 🧪 Commands Checklist
 Run Tests: ```npm test```
 
@@ -78,37 +103,69 @@ Include the token in the header for authenticated requests:
 
 ### 🔐 Authentication & Users
 * **POST /users** - Register a new account.
+##### Example Request (*the fields in the example are just the mandatory, the API have other fields that can be provided*)
+```json
+{
+ "name": "John Doe"
+ "email": "john@example.com"
+ "password": "123456"
+}
+```
 
 * **POST /sessions** - Login to receive a JWT token.
 
 ### 👥 Teams (*Admin Only*)
 * **POST /teams** - Create a team.
-
+ ```json
+{
+ "email": "john@example.com"
+ "password": "123456"
+}
+```
 * **GET /teams** - List all teams with their members.
 
-* **PATCH /teams/:id** - Edit team details.
+* **PATCH /teams/:id** - Edit team details. *You need to send at least 1 field*
 
 * **DELETE /teams/:id** - Delete a team.
 
 * **POST /teams/:id/members** - Add users to a team.
+```json
+{
+ "usersIds": [ "member-uuid1", "member-uuid2" ]
+}
+```
 
 * **DELETE /teams/:id/members** - Remove users from a team.
 
 * **GET /teams/:id/members** - List users belonging to a specific team.
 
+*Team routes use the team `id` as a URL parameter and additional data in the request body when needed.*
+
 ### 📋 Tasks
 * **POST /tasks** - Create a task (*Members can only create tasks in teams they belong to*).
+```json
+{
+ "title": "Task Example"
+ "teamId": "team-uuid"
+}
+```
 
 * **GET /tasks** - List tasks with optional status and priority query filters (*Members only see tasks assigned to them*).
 
-* **PATCH /tasks/:id** - Update task fields (*Triggers a history log if status changes*).
+* **PATCH /tasks/:id** - Update task fields (*Triggers a history log if status changes*). *You need to send at least 1 field*
 
 * **DELETE /tasks/:id** - Delete a task.
 
 * **GET /tasks/:id/history** - Get status change history of a task.
 
 * **PATCH /tasks/:id/assign** (Admin Only) - Assign a task to a user (*The user must belong to the task's team*).
+```json
+{
+ "userId": "member-uuid"
+}
+```
 
+*All task routes use the task `id` as a URL parameter.*
 
 
 
