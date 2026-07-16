@@ -5,3 +5,5 @@ db_data
 /src/generated/prisma
 coverage/
 .vscode/
+.env.docker
+.gitignore
